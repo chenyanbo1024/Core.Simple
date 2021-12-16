@@ -1,0 +1,86 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "chenyanbo",
+  "classifications": [ "Web/WebAPI", ".NET 6" ],
+  "name": "Core.Simple",
+  "identity": "Core.Simple",
+  "shortName": "Core.Simple",
+  "tags": {
+    "language": "C#", 
+    "type": "project" 
+  },
+  "sourceName": "Template",
+  "preferNameDirectory": true,
+
+	"symbols": {
+		"authorizationTypes": {
+			"description": "The type of authorization",
+			"type": "parameter",
+			"datatype": "choice",
+			"choices": [
+				{
+					"choice": "simpleAuthorization",
+					"description": "简单授权,适合全局只有一种类型用户的项目."
+				},
+				{
+					"choice": "roleBased",
+					"description": "基于角色授权,适合全局只有某几个固定角色的项目."
+				},
+				{
+					"choice": "policyBased",
+					"description": "基于自定义策略,适合系统权限由数据库权限表驱动的项目,动态分配权限."
+				}
+			],
+			"defaultValue": "simpleAuthorization"
+		},
+		"simpleAuthorization": {
+			"type": "computed",
+			"value": "(authorizationTypes == \"simpleAuthorization\")"
+		},
+		"roleBased": {
+			"type": "computed",
+			"value": "(authorizationTypes == \"roleBased\")"
+		},
+		"policyBased": {
+			"type": "computed",
+			"value": "(authorizationTypes == \"policyBased\")"
+		},
+
+		"sqlType": {
+			"description": "The type of SQL",
+			"type": "parameter",
+			"datatype": "choice",
+			"choices": [
+				{
+					"choice": "SQLServer",
+					"description": "SQL Server"
+				},
+				{
+					"choice": "MySQL",
+					"description": "MySQL"
+				}
+			],
+			"defaultValue": "SQLServer"
+		},
+		"SQLServer": {
+			"type": "computed",
+			"value": "(sqlType == \"SQLServer\")"
+		},
+		"MySQL": {
+			"type": "computed",
+			"value": "(sqlType == \"MySQL\")"
+		}
+	},
+  "sources":[
+	{
+		"modifiers": [
+			{
+				"condition": "(!(authorizationTypes == \"policyBased\"))",
+				"exclude": [
+					"Core.Extensions/Authorizations/AuthorizationHandler.cs"
+				]
+			}
+		]
+	}
+  ]
+}
